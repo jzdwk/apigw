@@ -1,9 +1,5 @@
 package model
 
-import (
-	"apigw/util/encode"
-)
-
 type UserType int
 
 const PWD_SALT = "apigw#1.&168"

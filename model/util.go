@@ -6,9 +6,9 @@
 package model
 
 import (
+	"apigw/common"
 	"errors"
 	"github.com/astaxie/beego/orm"
-	"github.com/mvc/common"
 )
 
 const SQL_ERROR_CODE int64 = -1

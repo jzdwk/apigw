@@ -10,5 +10,6 @@ require (
 	github.com/getsentry/raven-go v0.2.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/goharbor/harbor/src v0.0.0-20200708014514-b87aa3b9d5f9
+	github.com/siddontang/go v0.0.0-20180604090527-bdc77568d726 // indirect
 	k8s.io/apimachinery v0.18.5
 )
