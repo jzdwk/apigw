@@ -3,7 +3,7 @@
 @Author : jzd
 @Project: sigmaop
 */
-package models
+package model
 
 import (
 	"errors"

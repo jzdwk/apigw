@@ -1,17 +1,15 @@
 package base
 
 import (
+	modelerr "apigw/models/response/errors"
+	"apigw/util/hack"
+	"apigw/util/logs"
 	"encoding/json"
 	"fmt"
-	erroresult "github.com/mvc/models/response/errors"
-	"github.com/mvc/util/hack"
-	"github.com/mvc/util/logs"
-	"k8s.io/apimachinery/pkg/api/errors"
-	"net/http"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/go-sql-driver/mysql"
+	"net/http"
 )
 
 type ResultHandlerController struct {
@@ -58,16 +56,11 @@ func (c *ResultHandlerController) AbortUnauthorized(msg string) {
 
 // Handle return http code and body normally, need return
 func (c *ResultHandlerController) HandleError(err error) int {
-	errorResult := &erroresult.ErrorResult{
+	errorResult := &modelerr.ErrorResult{
 		Code: http.StatusInternalServerError,
 	}
 	switch e := err.(type) {
-	// deal with kubernetes errors
-
-	case errors.APIStatus:
-		errorResult.Code = int(e.Status().Code)
-		errorResult.SubCode = errorResult.Code
-		errorResult.Msg = e.Status().Message
+	// deal with errors
 	case *mysql.MySQLError:
 		errorResult.Code = http.StatusBadRequest
 		errorResult.SubCode = int(e.Number)
@@ -78,7 +71,7 @@ func (c *ResultHandlerController) HandleError(err error) int {
 		} else {
 			errorResult.Msg = e.Message
 		}
-	case *erroresult.ErrorResult:
+	case *modelerr.ErrorResult:
 		errorResult = e
 	default:
 		if err == orm.ErrNoRows {
@@ -101,13 +94,12 @@ func (c *ResultHandlerController) HandleError(err error) int {
 		logs.Error("Json Marshal error. %v", err)
 		c.CustomAbort(http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 	}
-
 	c.Ctx.Output.Body(body)
 	return errorResult.Code
 }
 
 func (c *ResultHandlerController) errorResult(code int, msg string) []byte {
-	errorResult := erroresult.ErrorResult{
+	errorResult := modelerr.ErrorResult{
 		Code: code,
 		Msg:  msg,
 	}

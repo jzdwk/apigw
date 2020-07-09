@@ -1,9 +1,9 @@
 package base
 
 import (
+	"apigw/common"
+	"apigw/util/cameltrans"
 	"fmt"
-	"github.com/mvc/common"
-	"github.com/mvc/util/cameltrans"
 	"strconv"
 )
 

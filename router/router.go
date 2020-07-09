@@ -5,10 +5,10 @@
 // @TermsOfServiceUrl http://beego.me/
 // @License Apache 2.0
 // @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
-package routers
+package router
 
 import (
-	"apigw/controllers/api"
+	"apigw/controller/api"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	"path"

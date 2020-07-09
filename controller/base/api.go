@@ -15,7 +15,7 @@ var (
 
 type ApiController struct {
 	ParamBuilderController
-	User *models.User
+	SecurityCtx security.Context
 }
 
 func (c *ApiController) Prepare() {

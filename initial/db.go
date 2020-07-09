@@ -1,6 +1,7 @@
 package initial
 
 import (
+	"apigw/util/logs"
 	"database/sql"
 	"fmt"
 	"github.com/astaxie/beego"
@@ -17,10 +18,12 @@ func InitDb() {
 	// ensure database exist
 	err := ensureDatabase()
 	if err != nil {
+		logs.Error("database init err: %v", err)
 		panic(err)
 	}
 	db, err := orm.GetDB()
 	if err != nil {
+		logs.Error("database init err: %v", err)
 		panic(err)
 	}
 	ttl := beego.AppConfig.DefaultInt("DBConnTTL", 30)
@@ -66,11 +69,10 @@ func ensureDatabase() error {
 		}
 	}
 
-	fmt.Println("Initialize database connection: %s", strings.Replace(dbURL, beego.AppConfig.String("DBPasswd"), "****", 1))
-
+	logs.Info("Initialize database connection: %s", strings.Replace(dbURL, beego.AppConfig.String("DBPasswd"), "****", 1))
 	err = orm.RegisterDataBase("default", "mysql", addLocation(fmt.Sprintf("%s%s", dbURL, dbName)))
 	if err != nil {
-		fmt.Println("register database failed")
+		logs.Error("register database failed")
 		return err
 	}
 
