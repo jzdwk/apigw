@@ -8,7 +8,7 @@
 package routers
 
 import (
-	"apigw/controllers"
+	"apigw/controllers/api"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	"path"
@@ -35,17 +35,13 @@ func Init() {
 		AllowCredentials: true,
 	}))
 
-	ns := beego.NewNamespace("/mvc",
-		beego.NSNamespace("/user",
+	ns := beego.NewNamespace("/apigw",
+		beego.NSNamespace("/api",
 			beego.NSInclude(
-				&controllers.UserController{},
-			),
-		), beego.NSNamespace("/test",
-			beego.NSInclude(
-				&controllers.TestController{},
+				&api.Controller{},
 			),
 		),
+		//todo more controller
 	)
-
 	beego.AddNamespace(ns)
 }
