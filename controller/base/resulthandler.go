@@ -1,7 +1,7 @@
 package base
 
 import (
-	modelerr "apigw/models/response/errors"
+	modelerr "apigw/model/response/errors"
 	"apigw/util/hack"
 	"apigw/util/logs"
 	"encoding/json"

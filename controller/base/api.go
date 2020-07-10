@@ -1,7 +1,7 @@
 package base
 
 import (
-	"github.com/mvc/models"
+	"apigw/security"
 )
 
 var (
