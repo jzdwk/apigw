@@ -1,6 +1,7 @@
 package initial
 
 import (
+	"apigw/conf"
 	"apigw/util/logs"
 	"database/sql"
 	"fmt"
@@ -34,10 +35,12 @@ func InitDb() {
 }
 
 func ensureDatabase() error {
-	needInit, err := beego.AppConfig.Bool("InitDBFlag")
-	dbName := beego.AppConfig.String("DBName")
-	dbURL := fmt.Sprintf("%s:%s@%s/", beego.AppConfig.String("DBUser"),
-		beego.AppConfig.String("DBPasswd"), beego.AppConfig.String("DBTns"))
+	dbName := conf.ConfStoreMgr.GetItem(conf.DBNameKey).GetString()
+	tns := conf.ConfStoreMgr.GetItem(conf.DBTnsKey).GetString()
+	usr := conf.ConfStoreMgr.GetItem(conf.DBUserKey).GetString()
+	pwd := conf.ConfStoreMgr.GetItem(conf.DBPwdKey).GetString()
+	dbURL := fmt.Sprintf("%s:%s@%s/", usr,
+		pwd, tns)
 	db, err := sql.Open(DbDriverName, fmt.Sprintf("%s%s", dbURL, dbName))
 	if err != nil {
 		return err
@@ -69,33 +72,15 @@ func ensureDatabase() error {
 		}
 	}
 
-	logs.Info("Initialize database connection: %s", strings.Replace(dbURL, beego.AppConfig.String("DBPasswd"), "****", 1))
+	logs.Info("Initialize database connection: %s", strings.Replace(dbURL, pwd, "****", 1))
 	err = orm.RegisterDataBase("default", "mysql", addLocation(fmt.Sprintf("%s%s", dbURL, dbName)))
 	if err != nil {
 		logs.Error("register database failed")
 		return err
 	}
-
-	if needInit {
-		fmt.Println("need init start...  runsyncdb")
-		err = orm.RunSyncdb("default", false, true)
-		if err != nil {
-			return err
-		}
-		fmt.Println("create tables ")
-		for _, insertSql := range InitialData {
-			//skip err
-			/*	_, err = orm.NewOrm().Raw(insertSql).Exec()
-				if err != nil {
-					return err
-				}*/
-			orm.NewOrm().Raw(insertSql).Exec()
-		}
-
-	}
 	return nil
 }
 
 func addLocation(dbURL string) string {
-	return fmt.Sprintf("%s?charset=utf8&loc=%s", dbURL, beego.AppConfig.DefaultString("DBLoc", "Asia%2FShanghai"))
+	return fmt.Sprintf("%s?charset=utf8&loc=%s", dbURL, conf.ConfStoreMgr.GetItem(conf.DBLocKey).GetString())
 }

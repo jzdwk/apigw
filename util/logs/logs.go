@@ -1,12 +1,11 @@
 package logs
 
 import (
+	"apigw/conf"
 	"fmt"
-	"strings"
-
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/getsentry/raven-go"
+	"strings"
 )
 
 var (
@@ -17,8 +16,8 @@ var (
 )
 
 func init() {
-	logLevel := beego.AppConfig.DefaultInt("LogLevel", 6)
-	logFile := beego.AppConfig.String("logFile")
+	logLevel := conf.ConfStoreMgr.GetItem(conf.LogLevelKey).GetInt()
+	logFile := conf.ConfStoreMgr.GetItem(conf.LogFileKey).GetString()
 	if logFile != "" {
 		logger.SetLogger(logs.AdapterFile, fmt.Sprintf(`{"filename":"%s","maxlines" : 1000,"maxsize"  : 10240}`, logFile))
 	} else {
@@ -28,10 +27,10 @@ func init() {
 	logger.EnableFuncCallDepth(true)
 	logger.SetLogFuncCallDepth(3)
 
-	sentryEnable := beego.AppConfig.DefaultBool("SentryEnable", false)
+	sentryEnable := conf.ConfStoreMgr.GetItem(conf.SentryEnableKey).GetBool()
 	if sentryEnable {
-		sentryLogLevel = beego.AppConfig.DefaultInt("SentryLogLevel", 4)
-		dsn := beego.AppConfig.String("SentryDSN")
+		sentryLogLevel = conf.ConfStoreMgr.GetItem(conf.SentryLogLevelKey).GetInt()
+		dsn := conf.ConfStoreMgr.GetItem(conf.SentryDSNKey).GetString()
 		var err error
 		sentryClient, err = raven.New(dsn)
 		if err != nil {
