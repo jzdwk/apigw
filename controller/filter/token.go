@@ -31,6 +31,6 @@ func (c *reqTokenCtxModifier) Modify(ctx *beectx.Context) bool {
 		return false
 	}
 	sc := security.NewDefaultSecContext(usr)
-	addToReqContext(ctx.Request, SecCtxKey, sc)
+	addToReqContext(ctx.Request, security.SecCtxKey, sc)
 	return true
 }

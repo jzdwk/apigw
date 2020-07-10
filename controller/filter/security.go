@@ -6,14 +6,6 @@ import (
 	"net/http"
 )
 
-// ContextValueKey for content value
-type ContextValueKey string
-
-const (
-	// SecCtxKey is context value key for security context
-	SecCtxKey ContextValueKey = "apigw_security_context"
-)
-
 var reqCtxModifiers []ReqCtxModifier
 
 func Init() {

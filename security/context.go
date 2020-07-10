@@ -8,6 +8,16 @@ package security
 import (
 	"apigw/auth"
 	"apigw/model"
+	"fmt"
+	"net/http"
+)
+
+// ContextValueKey for content value
+type ContextValueKey string
+
+const (
+	// SecCtxKey is context value key for security context
+	SecCtxKey ContextValueKey = "apigw_security_context"
 )
 
 //security context do authN/Z
@@ -62,4 +72,21 @@ func (s *DefaultSecContext) IsSysAdmin() bool {
 func (s *DefaultSecContext) Permit(action auth.Action, resource auth.Resource) bool {
 	//todo return permission based on rbac
 	return true
+}
+
+func GetSecurityContext(req *http.Request) (Context, error) {
+	if req == nil {
+		return nil, fmt.Errorf("request is nil")
+	}
+
+	ctx := req.Context().Value(SecCtxKey)
+	if ctx == nil {
+		return nil, fmt.Errorf("the security context got from request is nil")
+	}
+
+	c, ok := ctx.(Context)
+	if !ok {
+		return nil, fmt.Errorf("the variable got from request is not security context type")
+	}
+	return c, nil
 }
