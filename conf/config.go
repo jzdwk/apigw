@@ -17,6 +17,7 @@ const (
 	DBPwdKey
 	DBLocKey
 	DBConTTLKey
+	DBShowSQL
 	//log
 	LogLevelKey
 	LogFileKey
@@ -28,18 +29,19 @@ const (
 var (
 	//init self-define config
 	configMap = map[int]*item{
-		//http listen
+		//bee http listen
 		AppAddrKey: {envKey: "APIGW_HTTP_ADDR", defaultValue: "localhost"},
-		//http port
+		//bee http port
 		AppPortKey: {envKey: "APIGW_HTTP_PORT", defaultValue: "8090"},
-		//db
+		//bee db
 		DBNameKey:   {envKey: "APIGW_DB_NAME", defaultValue: "apigw"},
 		DBTnsKey:    {envKey: "APIGW_DB_NAME", defaultValue: "tcp(127.0.0.1:3306)"},
 		DBUserKey:   {envKey: "APIGW_DB_USER", defaultValue: "tcp(127.0.0.1:3306)"},
 		DBPwdKey:    {envKey: "APIGW_DB_PWD", defaultValue: "123456"},
 		DBLocKey:    {envKey: "APIGW_DB_LOC", defaultValue: "Asia%2FShanghai"},
 		DBConTTLKey: {envKey: "APIGW_DB_TTL", defaultValue: "30"},
-		//log
+		DBShowSQL:   {envKey: "APIGW_SHOW_SQL", defaultValue: "false"},
+		//bee log
 		LogLevelKey:       {envKey: "APIGW_LOG_LVL", defaultValue: "6"},
 		LogFileKey:        {envKey: "APIGW_FILE", defaultValue: ""},
 		SentryEnableKey:   {envKey: "APIGW_LOG_SENTRY", defaultValue: "false"},
@@ -58,30 +60,23 @@ type item struct {
 	defaultValue string
 }
 
-func (i *item) GetString() string {
+func (i *item) getValue() string {
 	connStr, ex := os.LookupEnv(i.envKey)
 	if !ex {
 		return i.defaultValue
 	}
 	return connStr
 }
+func (i *item) GetString() string {
+	return i.getValue()
+}
 func (i *item) GetInt() int {
-	var rstStr string
-	connStr, ex := os.LookupEnv(i.envKey)
-	if !ex {
-		rstStr = i.defaultValue
-	}
-	rstStr = connStr
+	rstStr := i.getValue()
 	rst, _ := strconv.Atoi(rstStr)
 	return rst
 }
 func (i *item) GetBool() bool {
-	var rstStr string
-	connStr, ex := os.LookupEnv(i.envKey)
-	if !ex {
-		rstStr = i.defaultValue
-	}
-	rstStr = connStr
+	rstStr := i.getValue()
 	rst, _ := strconv.ParseBool(rstStr)
 	return rst
 }
@@ -103,7 +98,7 @@ func (s *storeMgr) GetItem(key int) *item {
 	return s.config[key]
 }
 
-func Init() {
+func InitConfig() {
 	//beego init config
 	beego.BConfig.AppName = "apigw"
 	beego.BConfig.Listen = beego.Listen{HTTPAddr: configMap[AppAddrKey].GetString(), HTTPPort: configMap[AppPortKey].GetInt()}

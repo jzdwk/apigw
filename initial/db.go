@@ -5,7 +5,6 @@ import (
 	"apigw/util/logs"
 	"database/sql"
 	"fmt"
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/go-sql-driver/mysql"
 	"strings"
@@ -27,11 +26,9 @@ func InitDb() {
 		logs.Error("database init err: %v", err)
 		panic(err)
 	}
-	ttl := beego.AppConfig.DefaultInt("DBConnTTL", 30)
-
+	ttl := conf.ConfStoreMgr.GetItem(conf.DBConTTLKey).GetInt()
 	db.SetConnMaxLifetime(time.Duration(ttl) * time.Second)
-
-	orm.Debug = beego.AppConfig.DefaultBool("ShowSql", false)
+	orm.Debug = conf.ConfStoreMgr.GetItem(conf.DBShowSQL).GetBool()
 }
 
 func ensureDatabase() error {

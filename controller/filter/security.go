@@ -9,11 +9,6 @@ import (
 // ContextValueKey for content value
 type ContextValueKey string
 
-type pathMethod struct {
-	path   string
-	method string
-}
-
 const (
 	// SecCtxKey is context value key for security context
 	SecCtxKey ContextValueKey = "apigw_security_context"
