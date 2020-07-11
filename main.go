@@ -11,7 +11,7 @@ import (
 
 func main() {
 	logs.Info("initializing configurations...")
-	conf.Init()
+	conf.InitConfig()
 	//db init 使用
 	logs.Info("initializing database...")
 	initial.InitDb()

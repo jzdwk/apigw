@@ -50,7 +50,7 @@ var (
 		//todo more self-define config
 	}
 
-	ConfStoreMgr *storeMgr
+	ConfStoreMgr StoreMgr
 )
 
 //config item const
@@ -90,7 +90,7 @@ type storeMgr struct {
 	config map[int]*item
 }
 
-func NewStoreMgr() *storeMgr {
+func NewStoreMgr() StoreMgr {
 	return &storeMgr{config: configMap}
 }
 
