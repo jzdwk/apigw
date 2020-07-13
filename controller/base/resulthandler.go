@@ -1,7 +1,7 @@
 package base
 
 import (
-	modelerr "apigw/model/response/errors"
+	daoerr "apigw/dao/response/errors"
 	"apigw/util/hack"
 	"apigw/util/logs"
 	"encoding/json"
@@ -19,6 +19,8 @@ type ResultHandlerController struct {
 type Result struct {
 	Data interface{} `json:"data"`
 }
+
+// result handler wrap
 
 func (c *ResultHandlerController) Success(data interface{}) {
 	c.Ctx.Output.SetStatus(http.StatusOK)
@@ -56,7 +58,7 @@ func (c *ResultHandlerController) AbortUnauthorized(msg string) {
 
 // Handle return http code and body normally, need return
 func (c *ResultHandlerController) HandleError(err error) int {
-	errorResult := &modelerr.ErrorResult{
+	errorResult := &daoerr.ErrorResult{
 		Code: http.StatusInternalServerError,
 	}
 	switch e := err.(type) {
@@ -71,7 +73,7 @@ func (c *ResultHandlerController) HandleError(err error) int {
 		} else {
 			errorResult.Msg = e.Message
 		}
-	case *modelerr.ErrorResult:
+	case *daoerr.ErrorResult:
 		errorResult = e
 	default:
 		if err == orm.ErrNoRows {
@@ -99,7 +101,7 @@ func (c *ResultHandlerController) HandleError(err error) int {
 }
 
 func (c *ResultHandlerController) errorResult(code int, msg string) []byte {
-	errorResult := modelerr.ErrorResult{
+	errorResult := daoerr.ErrorResult{
 		Code: code,
 		Msg:  msg,
 	}
