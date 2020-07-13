@@ -8,6 +8,8 @@ import (
 	"sync"
 )
 
+const SqlErrorCode int64 = -1
+
 var (
 	globalOrm orm.Ormer
 	once      sync.Once
@@ -48,8 +50,6 @@ func WithTransaction(handler func(o orm.Ormer) error) error {
 	return nil
 }
 
-const SQL_ERROR_CODE int64 = -1
-
 // 所有实体表的单表查询统一封装
 // @Description get entity by id
 // @Param	table   table name for query
@@ -80,10 +80,10 @@ func GetOne(table interface{}, record interface{}, id int64, relates ...string) 
 func Update(table interface{}, id int64, update interface{}, cols []string) (num int64, err error) {
 	qs := Ormer().QueryTable(table).Filter("Id", id).Filter("Deleted", 0)
 	if !qs.Exist() {
-		return SQL_ERROR_CODE, errors.New("record isn't exist")
+		return SqlErrorCode, errors.New("record isn't exist")
 	}
 	if num, err = Ormer().Update(update, cols...); err != nil {
-		return SQL_ERROR_CODE, err
+		return SqlErrorCode, err
 	}
 	return num, nil
 }
@@ -96,10 +96,10 @@ func Add(table interface{}, record interface{}) (num int64, err error) {
 	qs := Ormer().QueryTable(table)
 	i, err := qs.PrepareInsert()
 	if err != nil {
-		return SQL_ERROR_CODE, err
+		return SqlErrorCode, err
 	}
 	if num, err = i.Insert(record); err != nil {
-		return SQL_ERROR_CODE, err
+		return SqlErrorCode, err
 	}
 	return num, nil
 }
@@ -111,7 +111,7 @@ func Add(table interface{}, record interface{}) (num int64, err error) {
 func SoftDelete(table interface{}, id int64) (num int64, err error) {
 	qs := Ormer().QueryTable(table).Filter("Id", id).Filter("Deleted", 0)
 	if !qs.Exist() {
-		return SQL_ERROR_CODE, errors.New("record isn't exist")
+		return SqlErrorCode, errors.New("record isn't exist")
 	}
 	param := make(map[string]interface{})
 	// 删除位
@@ -130,7 +130,7 @@ func SoftDelete(table interface{}, id int64) (num int64, err error) {
 func Delete(table interface{}, id int64) (num int64, err error) {
 	qs := Ormer().QueryTable(table)
 	if num, err = qs.Filter("Deleted", 0).Filter("Id", id).Delete(); err != nil {
-		return SQL_ERROR_CODE, err
+		return SqlErrorCode, err
 	}
 	return num, nil
 
