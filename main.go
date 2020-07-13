@@ -11,14 +11,17 @@ import (
 
 func main() {
 	logs.Info("initializing configurations...")
+	//init config
 	conf.InitConfig()
-	//db init 使用
+	//init db
 	logs.Info("initializing database...")
 	initial.InitDb()
 	beego.InsertFilter("/*", beego.BeforeRouter, filter.SecurityFilter)
-	//初始化route
+	//init route
 	logs.Info("initializing router...")
 	router.Init()
+	//init manager
+
 	beego.Run()
 
 }

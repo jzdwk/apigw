@@ -8,7 +8,8 @@
 package router
 
 import (
-	"apigw/controller/api"
+	"apigw/controller/ecpinfo"
+	"apigw/manager"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	"path"
@@ -35,10 +36,10 @@ func Init() {
 		AllowCredentials: true,
 	}))
 
-	ns := beego.NewNamespace("/apigw",
-		beego.NSNamespace("/api",
+	ns := beego.NewNamespace("/apigw/v1",
+		beego.NSNamespace("/ecp",
 			beego.NSInclude(
-				&api.Controller{},
+				&ecpinfo.Controller{EcpManager: manager.NewDefaultEcpManager()},
 			),
 		),
 		//todo more controller

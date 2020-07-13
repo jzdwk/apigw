@@ -10,5 +10,4 @@ func init() {
 	orm.Debug = true
 	// init orm tables
 	orm.RegisterModel(new(EcpInfo))
-
 }
