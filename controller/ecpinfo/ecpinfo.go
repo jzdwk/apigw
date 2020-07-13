@@ -24,7 +24,7 @@ type Controller struct {
 // @Param	body	body	model.EcpInfo	true	"body for test content"
 // @Success 201 {string} success message
 // @Failure 403 body is empty
-// @router /  [post]
+// @router / [post]
 func (c *Controller) Post() {
 	var v model.EcpInfo
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err != nil {

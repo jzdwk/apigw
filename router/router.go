@@ -1,10 +1,3 @@
-// @APIVersion 1.0.0
-// @Title beego Test API
-// @Description beego has a very cool tools to autogenerate documents for your API
-// @Contact astaxie@gmail.com
-// @TermsOfServiceUrl http://beego.me/
-// @License Apache 2.0
-// @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
 package router
 
 import (
@@ -15,7 +8,7 @@ import (
 	"path"
 )
 
-func Init() {
+func init() {
 
 	// Beego注解路由代码生成规则和程序运行路径相关，需要改写一下避免产生不一致的文件名
 	if beego.BConfig.RunMode == "dev" && path.Base(beego.AppPath) == "_build" {

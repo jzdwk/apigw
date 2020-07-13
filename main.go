@@ -1,10 +1,11 @@
 package main
 
 import (
-	"apigw/conf"
+	_ "apigw/conf"
 	"apigw/controller/filter"
 	"apigw/initial"
-	"apigw/router"
+	_ "apigw/model"
+	_ "apigw/router"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 )
@@ -12,16 +13,14 @@ import (
 func main() {
 	logs.Info("initializing configurations...")
 	//init config
-	conf.InitConfig()
+	//conf.InitConfig()
 	//init db
 	logs.Info("initializing database...")
 	initial.InitDb()
 	beego.InsertFilter("/*", beego.BeforeRouter, filter.SecurityFilter)
 	//init route
 	logs.Info("initializing router...")
-	router.Init()
-	//init manager
-
+	//init logger
+	//gwlogs.InitLog()
 	beego.Run()
-
 }

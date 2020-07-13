@@ -11,5 +11,5 @@ type EcpInfo struct {
 	Region string `orm:"column(region)" json:"region"`
 	Ip     string `orm:"column(ip)" json:"ip"`
 	Port   string `orm:"column(port)" json:"port"`
-	Info   string `orm:"column(port)" json:"port"`
+	Info   string `orm:"column(info)" json:"info"`
 }

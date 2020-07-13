@@ -35,8 +35,8 @@ var (
 		AppPortKey: {envKey: "APIGW_HTTP_PORT", defaultValue: "8090"},
 		//bee db
 		DBNameKey:   {envKey: "APIGW_DB_NAME", defaultValue: "apigw"},
-		DBTnsKey:    {envKey: "APIGW_DB_NAME", defaultValue: "tcp(127.0.0.1:3306)"},
-		DBUserKey:   {envKey: "APIGW_DB_USER", defaultValue: "tcp(127.0.0.1:3306)"},
+		DBTnsKey:    {envKey: "APIGW_DB_TNS", defaultValue: "tcp(127.0.0.1:3306)"},
+		DBUserKey:   {envKey: "APIGW_DB_USER", defaultValue: "root"},
 		DBPwdKey:    {envKey: "APIGW_DB_PWD", defaultValue: "123456"},
 		DBLocKey:    {envKey: "APIGW_DB_LOC", defaultValue: "Asia%2FShanghai"},
 		DBConTTLKey: {envKey: "APIGW_DB_TTL", defaultValue: "30"},
@@ -98,10 +98,10 @@ func (s *storeMgr) GetItem(key int) *item {
 	return s.config[key]
 }
 
-func InitConfig() {
+func init() {
 	//beego init config
 	beego.BConfig.AppName = "apigw"
-	beego.BConfig.Listen = beego.Listen{HTTPAddr: configMap[AppAddrKey].GetString(), HTTPPort: configMap[AppPortKey].GetInt()}
+	beego.BConfig.Listen = beego.Listen{EnableHTTP: true, HTTPAddr: configMap[AppAddrKey].GetString(), HTTPPort: configMap[AppPortKey].GetInt()}
 	beego.BConfig.RunMode = "dev"
 	beego.BConfig.CopyRequestBody = true
 
