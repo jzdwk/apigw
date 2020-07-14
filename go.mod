@@ -1,6 +1,6 @@
 module apigw
 
-go 1.13
+go 1.12
 
 require (
 	github.com/astaxie/beego v1.12.2
@@ -9,7 +9,6 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/hbagdi/go-kong v0.11.0
 	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect
-	github.com/lib/pq v1.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect

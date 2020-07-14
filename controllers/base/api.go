@@ -1,18 +1,31 @@
-/*
-@Time : 20-7-9
-@Author : jzd
-@Project: apigw
-*/
-package auth
+package base
 
-import "apigw/models"
+import (
+	"apigw/models"
+)
 
-func SSOLogin(token string) (rst bool, usr *models.User) {
-	//check like this
-	/*kv := strings.Split(authString, " ")
+var (
+	PublishRequestMessageMethodFilter = []string{
+		"POST",
+		"PUT",
+		"DELETE",
+		"PATCH",
+	}
+)
+
+type ApiController struct {
+	ParamBuilderController
+	User *models.User
+}
+
+func (c *ApiController) Prepare() {
+	//base auth token check
+	/*authString := c.Ctx.Input.Header("Authorization")
+
+	kv := strings.Split(authString, " ")
 	if len(kv) != 2 || kv[0] != "Bearer" {
-		logs.Error("AuthString invalid:", authString)
-		return false
+		logs.Info("AuthString invalid:", authString)
+		c.CustomAbort(http.StatusUnauthorized, "Token invalid!")
 	}
 	tokenString := kv[1]
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -38,15 +51,12 @@ func SSOLogin(token string) (rst bool, usr *models.User) {
 	}
 
 	if err != nil || !token.Valid {
-
+		c.CustomAbort(errResult.Code, errResult.Msg)
 	}
 	claim := token.Claims.(jwt.MapClaims)
 	aud := claim["userName"].(string)
+	c.User, err = models.UserModel.GetUserDetail(aud)
 	if err != nil {
 		c.CustomAbort(http.StatusInternalServerError, err.Error())
 	}*/
-	//todo check token
-	usr = &models.User{Name: "test", Admin: false}
-	return true, usr
-
 }

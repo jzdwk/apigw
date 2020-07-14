@@ -54,6 +54,14 @@ func (c *ParamBuilderController) GetIDFromURL() int64 {
 	return c.GetIntParamFromURL(":id")
 }
 
+func (c *ParamBuilderController) GetStrIDFromURL() string {
+	paramStr := c.Ctx.Input.Param(":id")
+	if len(paramStr) == 0 {
+		c.AbortBadRequest(fmt.Sprintf("Invalid %s in URL", ":id"))
+	}
+	return paramStr
+}
+
 func (c *ParamBuilderController) GetIntParamFromURL(param string) int64 {
 	paramStr := c.Ctx.Input.Param(param)
 	if len(paramStr) == 0 {

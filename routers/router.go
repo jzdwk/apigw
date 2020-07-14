@@ -1,8 +1,15 @@
-package router
+// @APIVersion 1.0.0
+// @Title beego Test API
+// @Description beego has a very cool tools to autogenerate documents for your API
+// @Contact astaxie@gmail.com
+// @TermsOfServiceUrl http://beego.me/
+// @License Apache 2.0
+// @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
+package routers
 
 import (
-	"apigw/controller/ecpinfo"
-	"apigw/manager"
+	"apigw/controllers"
+	"apigw/manager/ecpinfo"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	"path"
@@ -12,7 +19,7 @@ func init() {
 
 	// Beego注解路由代码生成规则和程序运行路径相关，需要改写一下避免产生不一致的文件名
 	if beego.BConfig.RunMode == "dev" && path.Base(beego.AppPath) == "_build" {
-		beego.AppPath = path.Join(path.Dir(beego.AppPath), "/mvc")
+		beego.AppPath = path.Join(path.Dir(beego.AppPath), "/apigw")
 	}
 	//swagger
 	if beego.BConfig.RunMode == "dev" {
@@ -29,13 +36,13 @@ func init() {
 		AllowCredentials: true,
 	}))
 
-	ns := beego.NewNamespace("/apigw/v1",
+	ns := beego.NewNamespace("/apigw/v1/",
 		beego.NSNamespace("/ecp",
 			beego.NSInclude(
-				&ecpinfo.Controller{EcpManager: manager.NewDefaultEcpManager()},
+				&controllers.EcpInfoController{EcpManager: ecpinfo.NewDefaultEcpManager()},
 			),
 		),
-		//todo more controller
 	)
+
 	beego.AddNamespace(ns)
 }

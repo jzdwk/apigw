@@ -6,6 +6,9 @@ type QueryParam struct {
 	Query    map[string]interface{} `json:"query"`
 	Order    string                 `json:"order"`
 	GroupBy  []string               `json:"groupby"`
+	//Relate   string                 `json:"relate"`
+	/*// only for kubernetes resource
+	LabelSelector string `json:"-"`*/
 }
 
 func (q *QueryParam) Offset() int64 {

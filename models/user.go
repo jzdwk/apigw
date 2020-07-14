@@ -3,12 +3,10 @@
 @Author : jzd
 @Project: apigw
 */
-package model
+package models
 
-//user info from token
 type User struct {
+	Id    int64
 	Name  string
 	Admin bool
-	//todo more infos
-	Detail string
 }

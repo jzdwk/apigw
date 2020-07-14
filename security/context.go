@@ -7,7 +7,7 @@ package security
 
 import (
 	"apigw/auth"
-	"apigw/model"
+	"apigw/models"
 	"fmt"
 	"net/http"
 )
@@ -35,11 +35,11 @@ type Context interface {
 // Default security context
 // DefaultSecContext implements security.Context interface based on token
 type DefaultSecContext struct {
-	user *model.User
+	user *models.User
 }
 
 // NewSecurityContext ...
-func NewDefaultSecContext(user *model.User) *DefaultSecContext {
+func NewDefaultSecContext(user *models.User) *DefaultSecContext {
 	return &DefaultSecContext{
 		user: user,
 	}

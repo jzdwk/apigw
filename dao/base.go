@@ -15,6 +15,10 @@ var (
 	once      sync.Once
 )
 
+var UUID = func() string {
+	return "uuid-test"
+}
+
 // singleton init ormer ,only use for normal db operation
 // if you begin transaction，please use WithTransaction
 func Ormer() orm.Ormer {
@@ -57,7 +61,7 @@ func WithTransaction(handler func(o orm.Ormer) error) error {
 // @Param	id		primary key
 // @Param	relates relate table name
 func GetOne(table interface{}, record interface{}, id int64, relates ...string) (err error) {
-	qs := Ormer().QueryTable(table).Filter("Deleted", 0).Filter("Id", id)
+	qs := Ormer().QueryTable(table).Filter("Deleted", 0).Filter("UUID", id)
 	//级联参数
 	if relates != nil {
 		for _, relate := range relates {
@@ -78,7 +82,7 @@ func GetOne(table interface{}, record interface{}, id int64, relates ...string) 
 // @Param	update  update value
 // @Param	cols	columns allowed to update
 func Update(table interface{}, id int64, update interface{}, cols []string) (num int64, err error) {
-	qs := Ormer().QueryTable(table).Filter("Id", id).Filter("Deleted", 0)
+	qs := Ormer().QueryTable(table).Filter("UUID", id).Filter("Deleted", 0)
 	if !qs.Exist() {
 		return SqlErrorCode, errors.New("record isn't exist")
 	}
@@ -109,7 +113,7 @@ func Add(table interface{}, record interface{}) (num int64, err error) {
 // @Param	table   table name
 // @Param	id    primary key
 func SoftDelete(table interface{}, id int64) (num int64, err error) {
-	qs := Ormer().QueryTable(table).Filter("Id", id).Filter("Deleted", 0)
+	qs := Ormer().QueryTable(table).Filter("UUID", id).Filter("Deleted", 0)
 	if !qs.Exist() {
 		return SqlErrorCode, errors.New("record isn't exist")
 	}
@@ -129,7 +133,7 @@ func SoftDelete(table interface{}, id int64) (num int64, err error) {
 // @Param	id    primary key
 func Delete(table interface{}, id int64) (num int64, err error) {
 	qs := Ormer().QueryTable(table)
-	if num, err = qs.Filter("Deleted", 0).Filter("Id", id).Delete(); err != nil {
+	if num, err = qs.Filter("Deleted", 0).Filter("UUID", id).Delete(); err != nil {
 		return SqlErrorCode, err
 	}
 	return num, nil

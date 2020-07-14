@@ -1,10 +1,9 @@
 package initial
 
 import (
-	"apigw/conf"
-	"apigw/util/logs"
 	"database/sql"
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/go-sql-driver/mysql"
 	"strings"
@@ -18,26 +17,24 @@ func InitDb() {
 	// ensure database exist
 	err := ensureDatabase()
 	if err != nil {
-		logs.Error("database init err: %v", err)
 		panic(err)
 	}
 	db, err := orm.GetDB()
 	if err != nil {
-		logs.Error("database init err: %v", err)
 		panic(err)
 	}
-	ttl := conf.ConfStoreMgr.GetItem(conf.DBConTTLKey).GetInt()
+	ttl := beego.AppConfig.DefaultInt("DBConnTTL", 30)
+
 	db.SetConnMaxLifetime(time.Duration(ttl) * time.Second)
-	orm.Debug = conf.ConfStoreMgr.GetItem(conf.DBShowSQL).GetBool()
+
+	orm.Debug = beego.AppConfig.DefaultBool("ShowSql", false)
 }
 
 func ensureDatabase() error {
-	dbName := conf.ConfStoreMgr.GetItem(conf.DBNameKey).GetString()
-	tns := conf.ConfStoreMgr.GetItem(conf.DBTnsKey).GetString()
-	usr := conf.ConfStoreMgr.GetItem(conf.DBUserKey).GetString()
-	pwd := conf.ConfStoreMgr.GetItem(conf.DBPwdKey).GetString()
-	dbURL := fmt.Sprintf("%s:%s@%s/", usr,
-		pwd, tns)
+	needInit, err := beego.AppConfig.Bool("InitDBFlag")
+	dbName := beego.AppConfig.String("DBName")
+	dbURL := fmt.Sprintf("%s:%s@%s/", beego.AppConfig.String("DBUser"),
+		beego.AppConfig.String("DBPasswd"), beego.AppConfig.String("DBTns"))
 	db, err := sql.Open(DbDriverName, fmt.Sprintf("%s%s", dbURL, dbName))
 	if err != nil {
 		return err
@@ -69,15 +66,34 @@ func ensureDatabase() error {
 		}
 	}
 
-	logs.Info("Initialize database connection: %s", strings.Replace(dbURL, pwd, "****", 1))
+	fmt.Println("Initialize database connection: %s", strings.Replace(dbURL, beego.AppConfig.String("DBPasswd"), "****", 1))
+
 	err = orm.RegisterDataBase("default", "mysql", addLocation(fmt.Sprintf("%s%s", dbURL, dbName)))
 	if err != nil {
-		logs.Error("register database failed")
+		fmt.Println("register database failed")
 		return err
+	}
+
+	if needInit {
+		fmt.Println("need init start...  runsyncdb")
+		err = orm.RunSyncdb("default", false, true)
+		if err != nil {
+			return err
+		}
+		fmt.Println("create tables ")
+		for _, insertSql := range InitialData {
+			//skip err
+			/*	_, err = orm.NewOrm().Raw(insertSql).Exec()
+				if err != nil {
+					return err
+				}*/
+			orm.NewOrm().Raw(insertSql).Exec()
+		}
+
 	}
 	return nil
 }
 
 func addLocation(dbURL string) string {
-	return fmt.Sprintf("%s?charset=utf8&loc=%s", dbURL, conf.ConfStoreMgr.GetItem(conf.DBLocKey).GetString())
+	return fmt.Sprintf("%s?charset=utf8&loc=%s", dbURL, beego.AppConfig.DefaultString("DBLoc", "Asia%2FShanghai"))
 }

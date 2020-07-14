@@ -1,15 +1,16 @@
 package base
 
 import (
-	daoerr "apigw/dao/response/errors"
+	erroresult "apigw/models/response/errors"
 	"apigw/util/hack"
 	"apigw/util/logs"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/go-sql-driver/mysql"
-	"net/http"
 )
 
 type ResultHandlerController struct {
@@ -19,8 +20,6 @@ type ResultHandlerController struct {
 type Result struct {
 	Data interface{} `json:"data"`
 }
-
-// result handler wrap
 
 func (c *ResultHandlerController) Success(data interface{}) {
 	c.Ctx.Output.SetStatus(http.StatusOK)
@@ -58,11 +57,12 @@ func (c *ResultHandlerController) AbortUnauthorized(msg string) {
 
 // Handle return http code and body normally, need return
 func (c *ResultHandlerController) HandleError(err error) int {
-	errorResult := &daoerr.ErrorResult{
+	errorResult := &erroresult.ErrorResult{
 		Code: http.StatusInternalServerError,
 	}
 	switch e := err.(type) {
-	// deal with errors
+	// deal with kubernetes errors
+
 	case *mysql.MySQLError:
 		errorResult.Code = http.StatusBadRequest
 		errorResult.SubCode = int(e.Number)
@@ -73,7 +73,7 @@ func (c *ResultHandlerController) HandleError(err error) int {
 		} else {
 			errorResult.Msg = e.Message
 		}
-	case *daoerr.ErrorResult:
+	case *erroresult.ErrorResult:
 		errorResult = e
 	default:
 		if err == orm.ErrNoRows {
@@ -96,12 +96,13 @@ func (c *ResultHandlerController) HandleError(err error) int {
 		logs.Error("Json Marshal error. %v", err)
 		c.CustomAbort(http.StatusInternalServerError, http.StatusText(http.StatusInternalServerError))
 	}
+
 	c.Ctx.Output.Body(body)
 	return errorResult.Code
 }
 
 func (c *ResultHandlerController) errorResult(code int, msg string) []byte {
-	errorResult := daoerr.ErrorResult{
+	errorResult := erroresult.ErrorResult{
 		Code: code,
 		Msg:  msg,
 	}
