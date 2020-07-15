@@ -24,7 +24,7 @@ type DcDomainController struct {
 // @Param	body	body	models.EcpInfo	true	"body for test content"
 // @Success 201 {string} success message
 // @Failure 403 body is empty
-// @router /
+// @router / [post]
 func (c *DcDomainController) Post() {
 	var v models.DcDomain
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err != nil {

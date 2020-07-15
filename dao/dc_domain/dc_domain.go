@@ -30,7 +30,6 @@ const DomainInfo = "dc_domain"
 
 // post example
 func (e *defaultDao) Post(domain *models.DcDomain) (err error) {
-	domain.ID = dao.UUID()
 	if _, err := dao.Ormer().Insert(domain); err != nil {
 		logs.Error("add ecp info err %v.", err.Error())
 		return err
