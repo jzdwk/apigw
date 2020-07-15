@@ -1,10 +1,10 @@
 package initial
 
 import (
-	"apigw/conf"
 	"apigw/util/logs"
 	"database/sql"
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/go-sql-driver/mysql"
 	"strings"
@@ -24,24 +24,17 @@ func InitDb() {
 	if err != nil {
 		panic(err)
 	}
-	//ttl := beego.AppConfig.DefaultInt("DBConnTTL", 30)
-	ttl := conf.ConfStoreMgr.GetItem(conf.DBConTTLKey).GetInt()
+	ttl := beego.AppConfig.DefaultInt("DBConnTTL", 30)
 	db.SetConnMaxLifetime(time.Duration(ttl) * time.Second)
-	//orm.Debug = beego.AppConfig.DefaultBool("ShowSql", false)
-	orm.Debug = conf.ConfStoreMgr.GetItem(conf.DBShowSQL).GetBool()
+	orm.Debug = beego.AppConfig.DefaultBool("ShowSql", false)
 }
 
 func ensureDatabase() error {
-
-	dbName := conf.ConfStoreMgr.GetItem(conf.DBNameKey).GetString()
-	tns := conf.ConfStoreMgr.GetItem(conf.DBTnsKey).GetString()
-	usr := conf.ConfStoreMgr.GetItem(conf.DBUserKey).GetString()
-	pwd := conf.ConfStoreMgr.GetItem(conf.DBPwdKey).GetString()
-
-	//needInit, err := beego.AppConfig.Bool("InitDBFlag")
-	//dbName := beego.AppConfig.String("DBName")
-	/*dbURL := fmt.Sprintf("%s:%s@%s/", beego.AppConfig.String("DBUser"),
-	beego.AppConfig.String("DBPasswd"), beego.AppConfig.String("DBTns"))*/
+	needInit, err := beego.AppConfig.Bool("InitDBFlag")
+	dbName := beego.AppConfig.String("DBName")
+	tns := beego.AppConfig.String("DBTns")
+	usr := beego.AppConfig.String("DBUser")
+	pwd := beego.AppConfig.String("DBPasswd")
 
 	dbURL := fmt.Sprintf("%s:%s@%s/", usr, pwd, tns)
 	db, err := sql.Open(DbDriverName, fmt.Sprintf("%s%s", dbURL, dbName))
@@ -83,7 +76,7 @@ func ensureDatabase() error {
 		return err
 	}
 
-	if true {
+	if needInit {
 		fmt.Println("need init start...  runsyncdb")
 		err = orm.RunSyncdb("default", false, true)
 		if err != nil {
@@ -104,6 +97,5 @@ func ensureDatabase() error {
 }
 
 func addLocation(dbURL string) string {
-	//return fmt.Sprintf("%s?charset=utf8&loc=%s", dbURL, beego.AppConfig.DefaultString("DBLoc", "Asia%2FShanghai"))
-	return fmt.Sprintf("%s?charset=utf8&loc=%s", dbURL, conf.ConfStoreMgr.GetItem(conf.DBLocKey).GetString())
+	return fmt.Sprintf("%s?charset=utf8&loc=%s", dbURL, beego.AppConfig.DefaultString("DBLoc", "Asia%2FShanghai"))
 }

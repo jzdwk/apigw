@@ -1,7 +1,6 @@
 package main
 
 import (
-	"apigw/conf"
 	"apigw/controllers/filter"
 	"apigw/initial"
 	_ "apigw/models"
@@ -12,10 +11,8 @@ import (
 )
 
 func main() {
-	// config init
-	conf.InitConfig()
 	// log init
-	logs.InitLog()
+	logs.InitLogs()
 	// router init
 	routers.InitRouter()
 	// db init
@@ -23,5 +20,4 @@ func main() {
 	// filter init
 	beego.InsertFilter("/*", beego.BeforeRouter, filter.SecurityFilter)
 	beego.Run()
-
 }
