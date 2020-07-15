@@ -38,7 +38,7 @@ func (e *defaultDao) Post(ecp *ecpinfo.EcpInfo) (id string, err error) {
 	return ecp.UUID, nil
 }
 
-// post example
+// get example
 func (e *defaultDao) Get(uuid string) (rst *ecpinfo.EcpInfoResp, err error) {
 	ecp := &ecpinfo.EcpInfo{}
 	qs := dao.Ormer().QueryTable(EcpInfo).Filter("id", uuid)

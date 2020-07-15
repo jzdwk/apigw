@@ -14,5 +14,4 @@ func main() {
 	//filter init
 	beego.InsertFilter("/*", beego.BeforeRouter, filter.SecurityFilter)
 	beego.Run()
-
 }

@@ -10,4 +10,5 @@ func init() {
 	orm.Debug = true
 	// init orm tables
 	orm.RegisterModel(new(ecpinfo.EcpInfo))
+	orm.RegisterModel(new(ApiGroup),new(DcDomain))
 }
