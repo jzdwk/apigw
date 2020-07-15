@@ -15,7 +15,7 @@ import (
 	"path"
 )
 
-func init() {
+func InitRouter() {
 
 	// Beego注解路由代码生成规则和程序运行路径相关，需要改写一下避免产生不一致的文件名
 	if beego.BConfig.RunMode == "dev" && path.Base(beego.AppPath) == "_build" {
