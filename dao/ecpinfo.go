@@ -12,9 +12,9 @@ import (
 
 type Dao interface {
 	//post
-	Post(ecp *ecpinfo.EcpInfo) (string, error)
+	Create(ecp *ecpinfo.EcpInfo) (string, error)
 	//get
-	Get(uuid string) (*ecpinfo.EcpInfoResp, error)
+	Get(uuid string) (*ecpinfo.EcpInfo, error)
 	//todo more
 }
 
@@ -28,7 +28,7 @@ func NewDefalutDao() Dao {
 const EcpInfo = "ecp_info"
 
 // post example
-func (e *defaultDao) Post(ecp *ecpinfo.EcpInfo) (id string, err error) {
+func (e *defaultDao) Create(ecp *ecpinfo.EcpInfo) (id string, err error) {
 	ecp.UUID = UUID()
 	if _, err := Ormer().Insert(ecp); err != nil {
 		logs.Error("add ecp info err %v.", err.Error())
@@ -38,12 +38,12 @@ func (e *defaultDao) Post(ecp *ecpinfo.EcpInfo) (id string, err error) {
 }
 
 // post example
-func (e *defaultDao) Get(uuid string) (rst *ecpinfo.EcpInfoResp, err error) {
+func (e *defaultDao) Get(uuid string) (rst *ecpinfo.EcpInfo, err error) {
 	ecp := &ecpinfo.EcpInfo{}
 	qs := Ormer().QueryTable(EcpInfo).Filter("id", uuid)
 	if err := qs.One(ecp); err != nil {
 		return nil, err
 	}
 	//wrap
-	return &ecpinfo.EcpInfoResp{EcpInfo: ecp}, nil
+	return ecp, nil
 }

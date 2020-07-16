@@ -42,7 +42,7 @@ func (e *defaultEcpMg) Update(uuid string, info interface{}) (interface{}, error
 
 // post example
 func (e *defaultEcpMg) Post(ecp *ecpinfo.EcpInfo) (id string, err error) {
-	if _, err := e.dao.Post(ecp); err != nil {
+	if _, err := e.dao.Create(ecp); err != nil {
 		logs.Error("add ecp info err %v.", err.Error())
 		return "", err
 	}
@@ -51,10 +51,10 @@ func (e *defaultEcpMg) Post(ecp *ecpinfo.EcpInfo) (id string, err error) {
 
 // get example
 func (e *defaultEcpMg) Get(uuid string) (ecp *ecpinfo.EcpInfoResp, err error) {
-	ecp, err = e.dao.Get(uuid)
+	ecpInfo, err := e.dao.Get(uuid)
 	if err != nil {
 		logs.Error("add ecp info err %v.", err.Error())
 		return nil, err
 	}
-	return ecp, nil
+	return &ecpinfo.EcpInfoResp{EcpInfo: ecpInfo}, nil
 }
