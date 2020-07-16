@@ -3,7 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package koratelimit
+package hmacsvc
 
 type Service interface {
 }

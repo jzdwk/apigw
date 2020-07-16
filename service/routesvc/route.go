@@ -3,7 +3,9 @@
 @Author : jzd
 @Project: apigw
 */
-package koauth
+package routesvc
 
 type Service interface {
+	//
+	Create()
 }

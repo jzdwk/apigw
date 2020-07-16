@@ -9,7 +9,7 @@ package routers
 
 import (
 	"apigw/controllers"
-	"apigw/manager/ecpinfo"
+	"apigw/manager"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	"path"
@@ -39,7 +39,7 @@ func InitRouter() {
 	ns := beego.NewNamespace("/apigw/v1/",
 		beego.NSNamespace("/ecp",
 			beego.NSInclude(
-				&controllers.EcpInfoController{EcpManager: ecpinfo.NewDefaultEcpManager()},
+				&controllers.EcpInfoController{EcpManager: manager.NewDefaultEcpManager()},
 			),
 		),
 	)

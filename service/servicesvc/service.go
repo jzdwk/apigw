@@ -3,8 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package koroute
+package servicesvc
 
 type Service interface {
-	//
 }

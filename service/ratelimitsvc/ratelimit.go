@@ -3,7 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package koservice
+package ratelimitsvc
 
 type Service interface {
 }

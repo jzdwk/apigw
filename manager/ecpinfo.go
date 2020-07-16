@@ -3,10 +3,10 @@
 @Author : jzd
 @Project: apigw
 */
-package ecpinfo
+package manager
 
 import (
-	ecpinfoDao "apigw/dao/ecpinfo"
+	"apigw/dao"
 	"apigw/models/ecpinfo"
 	"apigw/util/logs"
 )
@@ -24,12 +24,12 @@ type EcpManager interface {
 
 //
 func NewDefaultEcpManager() EcpManager {
-	return &defaultEcpMg{dao: ecpinfoDao.NewDefalutDao()}
+	return &defaultEcpMg{dao: dao.NewDefalutDao()}
 }
 
 type defaultEcpMg struct {
 	//dao reference
-	dao ecpinfoDao.Dao
+	dao dao.Dao
 }
 
 func (e *defaultEcpMg) Delete(uuid string) (interface{}, error) {

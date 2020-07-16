@@ -3,8 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package koreqtrans
+package authsvc
 
 type Service interface {
-	//
 }

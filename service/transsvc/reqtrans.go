@@ -3,7 +3,8 @@
 @Author : jzd
 @Project: apigw
 */
-package kohmac
+package transsvc
 
 type Service interface {
+	//
 }

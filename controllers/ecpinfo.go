@@ -7,7 +7,7 @@ package controllers
 
 import (
 	"apigw/controllers/base"
-	ecpinfo2 "apigw/manager/ecpinfo"
+	"apigw/manager"
 	"apigw/models/ecpinfo"
 	"apigw/util/logs"
 	"encoding/json"
@@ -15,7 +15,7 @@ import (
 
 type EcpInfoController struct {
 	base.ApiController
-	EcpManager ecpinfo2.EcpManager
+	EcpManager manager.EcpManager
 }
 
 // Post ...
