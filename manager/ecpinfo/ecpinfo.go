@@ -17,6 +17,14 @@ type EcpManager interface {
 	Post(ecp *ecpinfo.EcpInfo) (string, error)
 	//get
 	Get(uuid string) (*ecpinfo.EcpInfoResp, error)
+	//todo implement
+	Delete(uuid string) (interface{}, error)
+	Update(uuid string, info interface{}) (interface{}, error)
+}
+
+//
+func NewDefaultEcpManager() EcpManager {
+	return &defaultEcpMg{dao: ecpinfoDao.NewDefalutDao()}
 }
 
 type defaultEcpMg struct {
@@ -24,9 +32,12 @@ type defaultEcpMg struct {
 	dao ecpinfoDao.Dao
 }
 
-//
-func NewDefaultEcpManager() EcpManager {
-	return &defaultEcpMg{dao: ecpinfoDao.NewDefalutDao()}
+func (e *defaultEcpMg) Delete(uuid string) (interface{}, error) {
+	panic("implement me")
+}
+
+func (e *defaultEcpMg) Update(uuid string, info interface{}) (interface{}, error) {
+	panic("implement me")
 }
 
 // post example
