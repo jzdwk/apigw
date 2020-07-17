@@ -6,10 +6,14 @@
 package manager
 
 type ApiManager interface {
-	//template CRUD
-	CreateTemplate(templateInfo interface{}) (uuid string, err error)
-	DeleteTemplate(tId string) error
-	UpdateTemplate(tId string, templateInfo interface{}) error
-	GetTemplate(tId string) (templateInfo interface{}, err error)
-	ListTemplate(templateQuery interface{}) (templateInfos interface{}, err error)
+	//template
+	CreateTemplate(templateInfo *interface{}) (uuid string, err error)
+	DeleteTemplate(templateId string) error
+	UpdateTemplate(templateId string, templateInfo *interface{}) error
+	GetTemplate(templateId string) (templateInfo *interface{}, err error)
+	//paged list
+	ListTemplate(templateQuery *interface{}) (templateList *interface{}, err error)
+
+	//args
+
 }

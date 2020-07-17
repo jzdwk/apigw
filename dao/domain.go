@@ -22,6 +22,10 @@ type DomainDao interface {
 type defaultDomainDao struct {
 }
 
+func NewDefaultDomainDao() DomainDao {
+	return &defaultDomainDao{}
+}
+
 func (*defaultDomainDao) Create(domainInfo *interface{}) (uuid string, err error) {
 	panic("implement me")
 }

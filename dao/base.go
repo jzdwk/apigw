@@ -60,8 +60,8 @@ func WithTransaction(handler func(o orm.Ormer) error) error {
 // @Param	rst		record
 // @Param	id		primary key
 // @Param	relates relate table name
-func GetOne(table interface{}, record interface{}, id int64, relates ...string) (err error) {
-	qs := Ormer().QueryTable(table).Filter("Deleted", 0).Filter("UUID", id)
+func GetOne(o orm.Ormer, table interface{}, record interface{}, id int64, relates ...string) (err error) {
+	qs := o.QueryTable(table).Filter("ID", id)
 	//级联参数
 	if relates != nil {
 		for _, relate := range relates {
@@ -81,8 +81,8 @@ func GetOne(table interface{}, record interface{}, id int64, relates ...string) 
 // @Param	id      primary key
 // @Param	update  update value
 // @Param	cols	columns allowed to update
-func Update(table interface{}, id int64, update interface{}, cols []string) (num int64, err error) {
-	qs := Ormer().QueryTable(table).Filter("UUID", id).Filter("Deleted", 0)
+func Update(o orm.Ormer, table interface{}, id int64, update interface{}, cols []string) (num int64, err error) {
+	qs := o.QueryTable(table).Filter("ID", id)
 	if !qs.Exist() {
 		return SqlErrorCode, errors.New("record isn't exist")
 	}
@@ -96,8 +96,8 @@ func Update(table interface{}, id int64, update interface{}, cols []string) (num
 // @Description add entity
 // @Param	table   table name for insert
 // @Param	record	 record for insert
-func Add(table interface{}, record interface{}) (num int64, err error) {
-	qs := Ormer().QueryTable(table)
+func Add(o orm.Ormer, table interface{}, record interface{}) (num int64, err error) {
+	qs := o.QueryTable(table)
 	i, err := qs.PrepareInsert()
 	if err != nil {
 		return SqlErrorCode, err
@@ -108,32 +108,13 @@ func Add(table interface{}, record interface{}) (num int64, err error) {
 	return num, nil
 }
 
-// 所有实体表的单表软删除统一封装
-// @Description add entity
-// @Param	table   table name
-// @Param	id    primary key
-func SoftDelete(table interface{}, id int64) (num int64, err error) {
-	qs := Ormer().QueryTable(table).Filter("UUID", id).Filter("Deleted", 0)
-	if !qs.Exist() {
-		return SqlErrorCode, errors.New("record isn't exist")
-	}
-	param := make(map[string]interface{})
-	// 删除位
-	param["Deleted"] = 1
-	if num, err = qs.Update(param); err != nil {
-		return num, err
-	}
-	return num, nil
-
-}
-
 // 所有实体表的单表删除统一封装,慎用,考虑特殊情况的数据直接删除
 // @Description add entity
 // @Param	table   table name
 // @Param	id    primary key
-func Delete(table interface{}, id int64) (num int64, err error) {
-	qs := Ormer().QueryTable(table)
-	if num, err = qs.Filter("Deleted", 0).Filter("UUID", id).Delete(); err != nil {
+func Delete(o orm.Ormer, table interface{}, id int64) (num int64, err error) {
+	qs := o.QueryTable(table)
+	if num, err = qs.Filter("UUID", id).Delete(); err != nil {
 		return SqlErrorCode, err
 	}
 	return num, nil
@@ -142,8 +123,8 @@ func Delete(table interface{}, id int64) (num int64, err error) {
 
 // 所有实体的唯一约束鉴别表
 // @Description exist key check
-func IsExist(table interface{}, param map[string]interface{}) (rst bool) {
-	qs := Ormer().QueryTable(table).Filter("Deleted", 0)
+func IsExist(o orm.Ormer, table interface{}, param map[string]interface{}) (rst bool) {
+	qs := o.QueryTable(table)
 	// query k=v
 	for k, v := range param {
 		if v != nil && v != "" {
@@ -155,8 +136,8 @@ func IsExist(table interface{}, param map[string]interface{}) (rst bool) {
 	return nums > 0
 }
 
-func GetTotal(queryTable interface{}, q *common.QueryParam) (int64, error) {
-	qs := Ormer().QueryTable(queryTable)
+func GetTotalCount(o orm.Ormer, queryTable interface{}, q *common.QueryParam) (int64, error) {
+	qs := o.QueryTable(queryTable)
 	qs = BuildFilter(qs, q.Query)
 	if len(q.GroupBy) != 0 {
 		qs = qs.GroupBy(q.GroupBy...)
@@ -164,8 +145,8 @@ func GetTotal(queryTable interface{}, q *common.QueryParam) (int64, error) {
 	return qs.Count()
 }
 
-func GetAll(queryTable interface{}, list interface{}, q *common.QueryParam) error {
-	qs := Ormer().QueryTable(queryTable)
+func GetAll(o orm.Ormer, queryTable interface{}, list interface{}, q *common.QueryParam) error {
+	qs := o.QueryTable(queryTable)
 	qs = BuildFilter(qs, q.Query)
 	if len(q.GroupBy) != 0 {
 		qs = qs.GroupBy(q.GroupBy...)

@@ -18,31 +18,42 @@ type EcpManager interface {
 	//get
 	Get(uuid string) (*ecpinfo.EcpInfoResp, error)
 	//todo implement
-	Delete(uuid string) (interface{}, error)
-	Update(uuid string, info interface{}) (interface{}, error)
+	Delete(uuid string) error
+	Update(uuid string, ecpInfo *interface{}) error
+	List(ecpQuery *interface{}) (ecpList *interface{}, err error)
+	All() (ecpList *interface{}, err error)
 }
 
 //
 func NewDefaultEcpManager() EcpManager {
-	return &defaultEcpMg{dao: dao.NewDefalutEcpDao()}
+	return &defaultEcpMg{ecpDao: dao.NewDefalutEcpDao()}
 }
 
 type defaultEcpMg struct {
-	//dao reference
-	dao dao.EcpDao
+	//domainDao reference
+	ecpDao dao.EcpDao
 }
 
-func (e *defaultEcpMg) Delete(uuid string) (interface{}, error) {
+func (e *defaultEcpMg) Delete(uuid string) error {
+	// delete
 	panic("implement me")
 }
 
-func (e *defaultEcpMg) Update(uuid string, info interface{}) (interface{}, error) {
+func (e *defaultEcpMg) Update(uuid string, ecpInfo *interface{}) error {
+	panic("implement me")
+}
+
+func (e *defaultEcpMg) List(ecpQuery *interface{}) (ecpList *interface{}, err error) {
+	panic("implement me")
+}
+
+func (e *defaultEcpMg) All() (ecpList *interface{}, err error) {
 	panic("implement me")
 }
 
 // post example
 func (e *defaultEcpMg) Post(ecp *ecpinfo.EcpInfo) (id string, err error) {
-	if _, err := e.dao.Create(ecp); err != nil {
+	if _, err := e.ecpDao.Create(ecp); err != nil {
 		logs.Error("add ecp info err %v.", err.Error())
 		return "", err
 	}
@@ -51,7 +62,7 @@ func (e *defaultEcpMg) Post(ecp *ecpinfo.EcpInfo) (id string, err error) {
 
 // get example
 func (e *defaultEcpMg) Get(uuid string) (ecp *ecpinfo.EcpInfoResp, err error) {
-	ecpInfo, err := e.dao.Get(uuid)
+	ecpInfo, err := e.ecpDao.Get(uuid)
 	if err != nil {
 		logs.Error("add ecp info err %v.", err.Error())
 		return nil, err
