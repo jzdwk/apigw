@@ -3,8 +3,6 @@ package main
 import (
 	"apigw/controllers/filter"
 	"apigw/initial"
-	_ "apigw/models"
-	_ "apigw/routers"
 	"github.com/astaxie/beego"
 )
 
@@ -15,3 +13,4 @@ func main() {
 	beego.InsertFilter("/*", beego.BeforeRouter, filter.SecurityFilter)
 	beego.Run()
 }
+
