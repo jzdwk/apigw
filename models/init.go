@@ -3,7 +3,7 @@ package models
 import (
 	"apigw/models/apimd"
 	"apigw/models/appmd"
-	cap2 "apigw/models/capmd"
+	"apigw/models/capmd"
 	"apigw/models/ecpmd"
 	"apigw/models/komd"
 	"github.com/astaxie/beego/orm"
@@ -41,6 +41,6 @@ func init() {
 	//appmd
 	orm.RegisterModel(new(appmd.AppInfo), new(appmd.AppCredential), new(appmd.AppGroupDc))
 	//capmd
-	orm.RegisterModel(new(cap2.CapGroupDc), new(cap2.CapMy))
+	orm.RegisterModel(new(capmd.CapGroupDc), new(capmd.CapMy))
 
 }
