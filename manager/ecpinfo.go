@@ -67,5 +67,5 @@ func (e *defaultEcpMg) Get(uuid string) (ecp *ecpmd.EcpInfoResp, err error) {
 		logs.Error("add ecpmd info err %v.", err.Error())
 		return nil, err
 	}
-	return &ecp.EcpInfoResp{EcpInfo: ecpInfo}, nil
+	return &ecpmd.EcpInfoResp{EcpInfo: ecpInfo}, nil
 }
