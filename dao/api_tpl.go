@@ -5,7 +5,7 @@
 */
 package dao
 
-//api template dao , only get/list. if do CUD, try dao.WithTransaction
+//apimd template dao , only get/list. if do CUD, try dao.WithTransaction
 type ApiTplDao interface {
 	Get(apiTplId string) (apiTplInfo *interface{}, err error)
 	//paged list

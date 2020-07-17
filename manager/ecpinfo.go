@@ -7,16 +7,16 @@ package manager
 
 import (
 	"apigw/dao"
-	"apigw/models/ecpinfo"
+	"apigw/models/ecpmd"
 	"apigw/util/logs"
 )
 
-//ecp interface define all ecp CRUDs
+//ecpmd interface define all ecpmd CRUDs
 type EcpManager interface {
 	//do Post
-	Post(ecp *ecpinfo.EcpInfo) (string, error)
+	Post(ecp *ecpmd.EcpInfo) (string, error)
 	//get
-	Get(uuid string) (*ecpinfo.EcpInfoResp, error)
+	Get(uuid string) (*ecpmd.EcpInfoResp, error)
 	//todo implement
 	Delete(uuid string) error
 	Update(uuid string, ecpInfo *interface{}) error
@@ -52,20 +52,20 @@ func (e *defaultEcpMg) All() (ecpList *interface{}, err error) {
 }
 
 // post example
-func (e *defaultEcpMg) Post(ecp *ecpinfo.EcpInfo) (id string, err error) {
+func (e *defaultEcpMg) Post(ecp *ecpmd.EcpInfo) (id string, err error) {
 	if _, err := e.ecpDao.Create(ecp); err != nil {
-		logs.Error("add ecp info err %v.", err.Error())
+		logs.Error("add ecpmd info err %v.", err.Error())
 		return "", err
 	}
 	return ecp.UUID, nil
 }
 
 // get example
-func (e *defaultEcpMg) Get(uuid string) (ecp *ecpinfo.EcpInfoResp, err error) {
+func (e *defaultEcpMg) Get(uuid string) (ecp *ecpmd.EcpInfoResp, err error) {
 	ecpInfo, err := e.ecpDao.Get(uuid)
 	if err != nil {
-		logs.Error("add ecp info err %v.", err.Error())
+		logs.Error("add ecpmd info err %v.", err.Error())
 		return nil, err
 	}
-	return &ecpinfo.EcpInfoResp{EcpInfo: ecpInfo}, nil
+	return &ecp.EcpInfoResp{EcpInfo: ecpInfo}, nil
 }

@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// for getnames api
+// for getnames apimd
 type NamesObject struct {
 	Id   int64  `json:"id,omitempty"`
 	Name string `json:"name,omitempty"`

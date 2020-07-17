@@ -36,7 +36,7 @@ func (a *defaultApiMg) ListApi(apiQuery *interface{}) (apiList *interface{}, err
 	panic("implement me")
 }
 
-//return api template info
+//return apimd template info
 func (a *defaultApiMg) GetApi(apiId string) (apiInfo *interface{}, err error) {
 	panic("implement me")
 }

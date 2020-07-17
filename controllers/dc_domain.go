@@ -7,32 +7,32 @@ package controllers
 
 import (
 	"apigw/controllers/base"
-	Domain2 "apigw/manager/dc_domain"
-	"apigw/models/dc_domain"
+	"apigw/manager"
+	"apigw/models/ecpmd"
 	"apigw/util/logs"
 	"encoding/json"
 )
 
 type DcDomainController struct {
 	base.ApiController
-	DcDomainManager Domain2.DomainManager
+	DcDomainManager manager.DomainManager
 }
 
 // Post ...
 // @Title Post
 // @Description create test
-// @Param	body	body	dc_domain.DcDomain	true	"body for test content"
+// @Param	body	body	ecp_domain.EcpDomain	true	"body for test content"
 // @Success 201 {string} success message
 // @Failure 403 body is empty
 // @router / [post]
 func (c *DcDomainController) Post() {
-	var v dc_domain.DcDomain
+	var v ecpmd.EcpDomain
 	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &v); err != nil {
 		logs.Error("get body error. %v", err)
 		c.AbortBadRequestFormat("test")
 		return
 	}
-	if  err := c.DcDomainManager.Post(&v); err != nil {
+	if err := c.DcDomainManager.Create(&v); err != nil {
 		logs.Error("create test error. %v", err)
 		c.HandleError(err)
 		return
@@ -51,7 +51,7 @@ func (c *DcDomainController) Post() {
 //	uuid := c.GetStrIDFromURL()
 //	rst, err := c.DcDomainManager.Get(uuid)
 //	if err != nil {
-//		logs.Error("get ecp info error. %v", err)
+//		logs.Error("get ecpmd info error. %v", err)
 //	}
 //	c.Success(rst)
 //}

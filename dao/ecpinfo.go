@@ -6,17 +6,17 @@
 package dao
 
 import (
-	"apigw/models/ecpinfo"
+	"apigw/models/ecpmd"
 	"apigw/util/logs"
 )
 
 type EcpDao interface {
 	//create
-	Create(ecp *ecpinfo.EcpInfo) (string, error)
+	Create(ecp *ecpmd.EcpInfo) (string, error)
 	//get
-	Get(uuid string) (*ecpinfo.EcpInfo, error)
+	Get(uuid string) (*ecpmd.EcpInfo, error)
 	//todo more
-	Update(uuid string, ecpInfo *ecpinfo.EcpInfo) error
+	Update(uuid string, ecpInfo *ecpmd.EcpInfo) error
 	Delete(uuid string) error
 	//paged list
 	List(ecpQuery *interface{}) (ecpList *interface{}, err error)
@@ -35,7 +35,7 @@ func (e *defaultEcpDao) All() (ecpInfo *interface{}, err error) {
 	panic("implement me")
 }
 
-func (e *defaultEcpDao) Update(uuid string, ecpInfo *ecpinfo.EcpInfo) error {
+func (e *defaultEcpDao) Update(uuid string, ecpInfo *ecpmd.EcpInfo) error {
 	panic("implement me")
 }
 
@@ -50,18 +50,18 @@ func NewDefalutEcpDao() EcpDao {
 const EcpInfo = "ecp_info"
 
 // post example
-func (e *defaultEcpDao) Create(ecp *ecpinfo.EcpInfo) (id string, err error) {
+func (e *defaultEcpDao) Create(ecp *ecpmd.EcpInfo) (id string, err error) {
 	ecp.UUID = UUID()
 	if _, err := Ormer().Insert(ecp); err != nil {
-		logs.Error("add ecp info err %v.", err.Error())
+		logs.Error("add ecpmd info err %v.", err.Error())
 		return "", err
 	}
 	return ecp.UUID, nil
 }
 
 // post example
-func (e *defaultEcpDao) Get(uuid string) (rst *ecpinfo.EcpInfo, err error) {
-	ecp := &ecpinfo.EcpInfo{}
+func (e *defaultEcpDao) Get(uuid string) (rst *ecpmd.EcpInfo, err error) {
+	ecp := &ecpmd.EcpInfo{}
 	qs := Ormer().QueryTable(EcpInfo).Filter("id", uuid)
 	if err := qs.One(ecp); err != nil {
 		return nil, err

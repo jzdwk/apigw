@@ -9,9 +9,9 @@ package routers
 
 import (
 	"apigw/controllers"
+	"apigw/manager"
 	"apigw/manager/dc_domain"
 	"apigw/manager/ecpinfo"
-	"apigw/manager"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
 	"path"
@@ -39,19 +39,17 @@ func InitRouter() {
 	}))
 
 	ns := beego.NewNamespace("/apigw/v1/",
-		beego.NSNamespace("/ecp",
+		beego.NSNamespace("/ecpmd",
 			beego.NSInclude(
 				&controllers.EcpInfoController{EcpManager: manager.NewDefaultEcpManager()},
 			),
 		),
 		beego.NSNamespace("/domain",
 			beego.NSInclude(
-				&controllers.DcDomainController{DcDomainManager: dc_domain.NewDefaultDomainManager()},
+				&controllers.DcDomainController{DcDomainManager: manager.NewDefaultDomainMg()},
 			),
 		),
-
 	)
-
 
 	beego.AddNamespace(ns)
 }
