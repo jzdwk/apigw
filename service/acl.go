@@ -6,4 +6,8 @@
 package service
 
 type Acl interface {
+	//Post
+	Create(templateId string) (koUUID string, err error)
+	//Delete
+	Delete(koUUID string) (err error)
 }

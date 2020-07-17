@@ -6,4 +6,8 @@
 package service
 
 type Auth interface {
+	//Post
+	Create(config *interface{}) (koUUID string, err error)
+	//Delete
+	Delete(koUUID string) (err error)
 }

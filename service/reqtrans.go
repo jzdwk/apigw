@@ -6,5 +6,8 @@
 package service
 
 type ReqTrans interface {
-	//
+	//Post
+	Create(config *interface{}) (koUUID string, err error)
+	//Delete
+	Delete(koUUID string) (err error)
 }
