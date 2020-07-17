@@ -3,9 +3,8 @@
 @Author : jzd
 @Project: apigw
 */
-package routesvc
+package service
 
-type Service interface {
+type ReqTrans interface {
 	//
-	Create()
 }

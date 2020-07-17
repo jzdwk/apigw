@@ -3,7 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package hmacsvc
+package service
 
-type Service interface {
+type Auth interface {
 }

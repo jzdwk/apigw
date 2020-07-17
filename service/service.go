@@ -3,7 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package authsvc
+package service
 
 type Service interface {
 }

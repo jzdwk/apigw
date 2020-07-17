@@ -3,7 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package servicesvc
+package service
 
-type Service interface {
+type Acl interface {
 }

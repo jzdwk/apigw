@@ -3,8 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package transsvc
+package service
 
-type Service interface {
-	//
+type Hmac interface {
 }

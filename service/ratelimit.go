@@ -3,7 +3,7 @@
 @Author : jzd
 @Project: apigw
 */
-package ratelimitsvc
+package service
 
-type Service interface {
+type RateLimit interface {
 }
