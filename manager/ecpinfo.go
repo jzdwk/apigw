@@ -24,12 +24,12 @@ type EcpManager interface {
 
 //
 func NewDefaultEcpManager() EcpManager {
-	return &defaultEcpMg{dao: dao.NewDefalutDao()}
+	return &defaultEcpMg{dao: dao.NewDefalutEcpDao()}
 }
 
 type defaultEcpMg struct {
 	//dao reference
-	dao dao.Dao
+	dao dao.EcpDao
 }
 
 func (e *defaultEcpMg) Delete(uuid string) (interface{}, error) {
