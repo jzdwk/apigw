@@ -5,6 +5,8 @@
 */
 package manager
 
+import "apigw/dao"
+
 type ApiManager interface {
 	CreateApi(apiTplId, ecpId string) error
 	DeleteApi(apiId string) error
@@ -14,6 +16,10 @@ type ApiManager interface {
 }
 
 type defaultApiMg struct {
+	//dao
+	apiDao dao.ApiDao
+	//kong
+
 }
 
 func (a *defaultApiMg) CreateApi(apiTplId, ecpId string) error {

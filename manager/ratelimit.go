@@ -17,7 +17,7 @@ type RateLimitManager interface {
 	UpdateRateLimit(rateLimitId string, rateLimitInfo *interface{}) error
 	GetRateLimit(rateLimitId string) (rateLimitInfo *interface{}, err error)
 	//paged list
-	ListRateLimit(rateLimitQuery *interface{}) (rateLimitInfo *interface{}, err error)
+	ListRateLimit(rateLimitQuery *interface{}) (rateLimitList *interface{}, err error)
 	//bind api
 	BindApi(rateLimitId, apiId string) error
 	UnbindApi(rateLimitId, apiId string) error

@@ -47,8 +47,6 @@ func NewDefalutEcpDao() EcpDao {
 	return &defaultEcpDao{}
 }
 
-const EcpInfo = "ecp_info"
-
 // post example
 func (e *defaultEcpDao) Create(ecp *ecpmd.EcpInfo) (id string, err error) {
 	ecp.UUID = UUID()
@@ -62,7 +60,7 @@ func (e *defaultEcpDao) Create(ecp *ecpmd.EcpInfo) (id string, err error) {
 // post example
 func (e *defaultEcpDao) Get(uuid string) (rst *ecpmd.EcpInfo, err error) {
 	ecp := &ecpmd.EcpInfo{}
-	qs := Ormer().QueryTable(EcpInfo).Filter("id", uuid)
+	qs := Ormer().QueryTable(&ecpmd.EcpInfo{}).Filter("id", uuid)
 	if err := qs.One(ecp); err != nil {
 		return nil, err
 	}

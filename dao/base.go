@@ -5,6 +5,7 @@ import (
 	"apigw/util/logs"
 	"errors"
 	"github.com/astaxie/beego/orm"
+	uuid "github.com/satori/go.uuid"
 	"sync"
 )
 
@@ -16,7 +17,7 @@ var (
 )
 
 var UUID = func() string {
-	return "uuid-test"
+	return uuid.NewV4().String()
 }
 
 // singleton init ormer ,only use for normal db operation
