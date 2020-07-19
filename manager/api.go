@@ -5,7 +5,14 @@
 */
 package manager
 
-import "apigw/dao"
+import (
+	"apigw/dao"
+	"apigw/kong"
+	"apigw/kong/crud"
+	"apigw/kong/solver"
+	"apigw/util/logs"
+	gokong "github.com/hbagdi/go-kong/kong"
+)
 
 type ApiManager interface {
 	CreateApi(apiTplId, ecpId string) error
@@ -31,6 +38,39 @@ func (a *defaultApiMg) CreateApi(apiTplId, ecpId string) error {
 	5. add ko_route & ko_req_trans, ko_route_plugin, add kong route in future mode
 	6. add kong trans plugin to kon
 	*/
+
+	/*
+	kong example
+	*/
+	opt := kong.KongClientConfig {
+		Address: "http://192.168.182.135:8001",
+	}
+	client, err := kong.GetKongClient(opt)
+	if err != nil {
+		logs.Error("get kong client err: ", err)
+	}
+
+	solver.BuildRegistry(client)
+	/*str := "userGo1"
+	e := crud.Event {
+		Op: crud.Create,
+		Kind: "consumer",
+		Obj: &kong.Consumer{Consumer:gokong.Consumer{Username: &str}},
+	}*/
+	routeName :="testApi"
+	e := crud.Event{
+		Op:crud.Create,
+		Kind:"route",
+		Obj:&kong.Route{Route:gokong.Route{Name:"test",Methods:&["http","https"],Path:""}},
+	}
+
+	result, err := solver.Solve(e)
+	if err != nil {
+		logs.Error("solver err: ", err)
+	}
+	logs.Info("result: ", *(result.(*kong.Consumer).Consumer.Username))
+	//调试代码
+
 	panic("implement me")
 }
 
