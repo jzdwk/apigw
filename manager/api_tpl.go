@@ -9,32 +9,32 @@ import "apigw/dao"
 
 type ApiTplManager interface {
 	//template
-	CreateTemplate(templateInfo *interface{}) (uuid string, err error)
-	DeleteTemplate(templateId string) error
-	UpdateTemplate(templateId string, templateInfo *interface{}) error
-	GetTemplate(templateId string) (templateInfo *interface{}, err error)
+	CreateApiTemplate(templateInfo *interface{}) (uuid string, err error)
+	DeleteApiTemplate(templateId string) error
+	//update api or template
+	UpdateApiTemplate(templateId string, templateInfo *interface{}) error
+	GetApiTemplate(templateId string) (templateInfo *interface{}, err error)
 	//paged list
-	ListTemplate(templateQuery *interface{}) (templateList *interface{}, err error)
-	//args
+	ListApiTemplate(templateQuery *interface{}) (templateList *interface{}, err error)
 }
 
 type defaultApiTplMg struct {
 	apiTplDao dao.ApiTplDao
 }
 
-func (a *defaultApiTplMg) CreateTemplate(templateInfo *interface{}) (uuid string, err error) {
+func (a *defaultApiTplMg) CreateApiTemplate(templateInfo *interface{}) (uuid string, err error) {
 	panic("implement me")
 }
 
-func (a *defaultApiTplMg) DeleteTemplate(templateId string) error {
+func (a *defaultApiTplMg) DeleteApiTemplate(templateId string) error {
 	panic("implement me")
 }
 
-func (a *defaultApiTplMg) UpdateTemplate(templateId string, templateInfo *interface{}) error {
+func (a *defaultApiTplMg) UpdateApiTemplate(templateId string, templateInfo *interface{}) error {
 	panic("implement me")
 }
 
-func (a *defaultApiTplMg) GetTemplate(templateId string) (templateInfo *interface{}, err error) {
+func (a *defaultApiTplMg) GetApiTemplate(templateId string) (templateInfo *interface{}, err error) {
 	//a.apiTplDao.Get(templateId)
 	panic("implement me")
 }
