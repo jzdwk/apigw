@@ -40,9 +40,9 @@ func (a *defaultApiMg) CreateApi(apiTplId, ecpId string) error {
 	*/
 
 	/*
-	kong example
+		kong example
 	*/
-	opt := kong.KongClientConfig {
+	opt := kong.KongClientConfig{
 		Address: "http://192.168.182.135:8001",
 	}
 	client, err := kong.GetKongClient(opt)
@@ -51,18 +51,18 @@ func (a *defaultApiMg) CreateApi(apiTplId, ecpId string) error {
 	}
 
 	solver.BuildRegistry(client)
-	/*str := "userGo1"
-	e := crud.Event {
-		Op: crud.Create,
+	/**/ str := "userGo1"
+	e := crud.Event{
+		Op:   crud.Create,
 		Kind: "consumer",
-		Obj: &kong.Consumer{Consumer:gokong.Consumer{Username: &str}},
-	}*/
-	routeName :="testApi"
+		Obj:  &kong.Consumer{Consumer: gokong.Consumer{Username: &str}},
+	}
+	/*routeName :="testApi"
 	e := crud.Event{
 		Op:crud.Create,
 		Kind:"route",
 		Obj:&kong.Route{Route:gokong.Route{Name:"test",Methods:&["http","https"],Path:""}},
-	}
+	}*/
 
 	result, err := solver.Solve(e)
 	if err != nil {
