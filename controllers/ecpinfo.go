@@ -18,8 +18,8 @@ type EcpInfoController struct {
 	EcpManager manager.EcpManager
 }
 
-// Post ...
-// @Title Post
+// Create ...
+// @Title Create
 // @Description create test
 // @Param	body	body	models.EcpInfo	true	"body for test content"
 // @Success 201 {string} success message
@@ -32,7 +32,7 @@ func (c *EcpInfoController) Post() {
 		c.AbortBadRequestFormat("test")
 		return
 	}
-	if _, err := c.EcpManager.Post(&v); err != nil {
+	if _, err := c.EcpManager.Create(&v); err != nil {
 		logs.Error("create test error. %v", err)
 		c.HandleError(err)
 		return

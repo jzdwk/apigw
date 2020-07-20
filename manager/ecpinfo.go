@@ -13,8 +13,8 @@ import (
 
 //ecpmd interface define all ecpmd CRUDs
 type EcpManager interface {
-	//do Post
-	Post(ecp *ecpmd.EcpInfo) (string, error)
+	//do Create
+	Create(ecp *ecpmd.EcpInfo) (string, error)
 	//get
 	Get(uuid string) (*ecpmd.EcpInfoResp, error)
 	//todo implement
@@ -52,7 +52,7 @@ func (e *defaultEcpMg) All() (ecpList *interface{}, err error) {
 }
 
 // post example
-func (e *defaultEcpMg) Post(ecp *ecpmd.EcpInfo) (id string, err error) {
+func (e *defaultEcpMg) Create(ecp *ecpmd.EcpInfo) (id string, err error) {
 	if _, err := e.ecpDao.Create(ecp); err != nil {
 		logs.Error("add ecpmd info err %v.", err.Error())
 		return "", err

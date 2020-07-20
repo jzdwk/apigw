@@ -15,8 +15,8 @@ type EcpDomainController struct {
 	EcpDomainMg manager.DomainManager
 }
 
-// Post ...
-// @Title Post
+// Create ...
+// @Title Create
 // @Description create test
 // @Param	body	body	ecp_domain.EcpDomain	true	"body for test content"
 // @Success 201 {string} success message

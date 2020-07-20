@@ -6,7 +6,7 @@
 package service
 
 type Hmac interface {
-	//Post
+	//Create
 	Create(config *interface{}) (koUUID string, err error)
 	//Delete
 	Delete(koUUID string) (err error)
